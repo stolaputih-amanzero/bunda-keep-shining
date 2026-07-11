@@ -88,7 +88,7 @@ export default function RSVPForm({
         </div>
         {status && (
           <div className="mt-4 w-full">
-            <DigitalRSVPCard guestName={guestName} count={count} />
+            <DigitalRSVPCard token={token} guestName={guestName} count={count} />
           </div>
         )}
       </div>

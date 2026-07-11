@@ -16,6 +16,7 @@ import Envelope from '@/components/landing/Envelope'
 import Greeting from '@/components/landing/Greeting'
 import Timeline from '@/components/Timeline'
 import GoldDust from '@/components/GoldDust'
+import HologramGreeting from '@/components/HologramGreeting'
 
 const getBaseUrl = () => {
   let url = process.env.NEXT_PUBLIC_APP_URL || 'https://meinita.amanloka.com'
@@ -113,6 +114,9 @@ export default async function InvitePage({
 
           {/* ✅ GREETING COMPONENT */}
           <Greeting guest={guest} />
+
+          {/* ✅ HOLOGRAM VIDEO GREETING */}
+          <HologramGreeting token={resolvedParams.token} />
 
           {/* ✅ TIMELINE 38 TAHUN */}
           <Timeline />
