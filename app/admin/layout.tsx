@@ -25,7 +25,7 @@ export default function AdminLayout({
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-[#FDFBF7] flex flex-col md:flex-row text-[#0A192F]">
+      <div className="min-h-screen bg-[#0A192F] flex flex-col md:flex-row text-white">
         {/* Sidebar Navigation */}
         <AdminSidebar />
 
