@@ -316,6 +316,25 @@ BEGIN
 END;
 $$;
 
+-- 9. Admin: Create/Update global configurations
+CREATE OR REPLACE FUNCTION admin_update_event_config(p_key TEXT, p_value JSONB)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    -- Verify admin
+    IF (SELECT auth.uid()) != (SELECT id FROM auth.users WHERE email = 'admin@meinita.amanloka.com') THEN
+        RAISE EXCEPTION 'Unauthorized';
+    END IF;
+
+    INSERT INTO event_config (key, value)
+    VALUES (p_key, p_value)
+    ON CONFLICT (key) DO UPDATE
+    SET value = p_value, updated_at = NOW();
+END;
+$$;
+
 -- =========================================================
 -- GRANT EXECUTE PRIVILEGES TO ANON ROLE
 -- (Required for frontend to execute RPC functions)
@@ -328,3 +347,4 @@ GRANT EXECUTE ON FUNCTION admin_delete_guest(UUID) TO anon;
 GRANT EXECUTE ON FUNCTION admin_bulk_create_guests(JSONB) TO anon;
 GRANT EXECUTE ON FUNCTION admin_get_prayers(INT, INT) TO anon;
 GRANT EXECUTE ON FUNCTION admin_delete_prayer(UUID) TO anon;
+GRANT EXECUTE ON FUNCTION admin_update_event_config(TEXT, JSONB) TO anon;
