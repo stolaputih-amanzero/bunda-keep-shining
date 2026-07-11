@@ -22,7 +22,7 @@
 /* Utilities for elegant animations and mobile constraints */
 @layer utilities {
   .mobile-container {
-    @apply max-w-[375px] mx-auto w-full min-h-screen bg-[var(--color-background)] shadow-2xl relative flex flex-col border-[8px] border-[#0A192F] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden;
+    @apply max-w-[375px] mx-auto w-full min-h-screen bg-[var(--color-background)] shadow-2xl relative flex flex-col border-[8px] border-[#0A192F] overflow-x-hidden;
   }
   
   /* The desktop fallback background */
