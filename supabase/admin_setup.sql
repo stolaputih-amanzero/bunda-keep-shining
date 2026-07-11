@@ -179,8 +179,7 @@ BEGIN
         phone = p_phone,
         table_number = p_table_number,
         rsvp_status = p_rsvp_status,
-        attendance_count = p_attendance_count,
-        updated_at = NOW()
+        attendance_count = p_attendance_count
     WHERE id = p_id;
 
     IF NOT FOUND THEN
