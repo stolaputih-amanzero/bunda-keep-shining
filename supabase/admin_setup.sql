@@ -296,6 +296,26 @@ BEGIN
 END;
 $$;
 
+-- 8. Admin: Delete prayer/guestbook message
+CREATE OR REPLACE FUNCTION admin_delete_prayer(p_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    -- Verify admin
+    IF (SELECT auth.uid()) != (SELECT id FROM auth.users WHERE email = 'admin@meinita.amanloka.com') THEN
+        RAISE EXCEPTION 'Unauthorized';
+    END IF;
+
+    DELETE FROM prayers_guestbook WHERE id = p_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Prayer not found';
+    END IF;
+END;
+$$;
+
 -- =========================================================
 -- GRANT EXECUTE PRIVILEGES TO ANON ROLE
 -- (Required for frontend to execute RPC functions)
@@ -307,3 +327,4 @@ GRANT EXECUTE ON FUNCTION admin_update_guest(UUID, TEXT, TEXT, TEXT, TEXT, TEXT,
 GRANT EXECUTE ON FUNCTION admin_delete_guest(UUID) TO anon;
 GRANT EXECUTE ON FUNCTION admin_bulk_create_guests(JSONB) TO anon;
 GRANT EXECUTE ON FUNCTION admin_get_prayers(INT, INT) TO anon;
+GRANT EXECUTE ON FUNCTION admin_delete_prayer(UUID) TO anon;
