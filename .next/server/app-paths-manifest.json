@@ -1,6 +1,0 @@
-{
-  "/icon.png/route": "app/icon.png/route.js",
-  "/page": "app/page.js",
-  "/invite/[token]/page": "app/invite/[token]/page.js",
-  "/invalid-invite/page": "app/invalid-invite/page.js"
-}

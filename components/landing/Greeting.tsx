@@ -21,7 +21,7 @@ const containerVariants = {
             delayChildren: 0.3,   // Jeda awal sebelum animasi dimulai
         },
     },
-}
+} as const
 
 const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -30,7 +30,7 @@ const itemVariants = {
         y: 0,
         transition: { duration: 0.8, ease: 'easeOut' },
     },
-}
+} as const
 
 export default function Greeting({ guest }: GreetingProps) {
     return (

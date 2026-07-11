@@ -10,7 +10,9 @@ type Prayer = {
   created_at: string
   guests: {
     full_name: string
-  }
+  } | {
+    full_name: string
+  }[] | null
 }
 
 export default function Guestbook({
@@ -49,7 +51,7 @@ export default function Guestbook({
             .single()
 
           if (newPrayer) {
-            setPrayers((prev) => [newPrayer as Prayer, ...prev])
+            setPrayers((prev) => [newPrayer as unknown as Prayer, ...prev])
           }
         }
       )
@@ -164,7 +166,9 @@ export default function Guestbook({
                 <div className="flex items-center space-x-2">
                   <span className="w-6 h-px bg-[#D4AF37]"></span>
                   <span className="text-[#0A192F] text-[9px] font-bold uppercase tracking-widest">
-                    {prayer.guests?.full_name || 'Anonymous'}
+                    {Array.isArray(prayer.guests)
+                      ? prayer.guests[0]?.full_name || 'Anonymous'
+                      : prayer.guests?.full_name || 'Anonymous'}
                   </span>
                 </div>
                 <span className="text-[#0A192F]/40 text-[9px]">
