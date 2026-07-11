@@ -15,7 +15,8 @@ import {
   Menu, 
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  MessageCircle
 } from 'lucide-react'
 import { logoutAdmin } from '@/app/admin/actions'
 import { useToast } from './Toast'
@@ -29,6 +30,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: 'Overview', href: '/admin', icon: LayoutDashboard },
   { name: 'Guests', href: '/admin/guests', icon: Users },
+  { name: 'WhatsApp', href: '/admin/whatsapp', icon: MessageCircle },
   { name: 'Timeline', href: '/admin/timeline', icon: Milestone },
   { name: 'Gallery', href: '/admin/gallery', icon: ImageIcon },
   { name: 'Prayers', href: '/admin/prayers', icon: MessageSquare },
