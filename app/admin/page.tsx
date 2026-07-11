@@ -4,14 +4,16 @@ import AdminLogin from '@/components/AdminLogin'
 import FadeIn from '@/components/FadeIn'
 
 export default async function AdminPage() {
-  const cookieStore = await cookies()
-  const isAuthenticated = cookieStore.get('admin_auth')?.value === 'true'
-
-  if (!isAuthenticated) {
-    return <AdminLogin />
-  }
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user || user.email !== 'admin@meinita.amanloka.com') {
+    return (
+      <div className="p-8 bg-[#FDFBF7] min-h-screen flex items-center justify-center">
+        <p className="text-[#0A192F]">Akses tidak sah. Silakan login terlebih dahulu.</p>
+      </div>
+    )
+  }
   
   // Fetch stats from guests table
   const { data: guests, error } = await supabase
