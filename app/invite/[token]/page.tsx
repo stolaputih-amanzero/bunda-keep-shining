@@ -17,7 +17,7 @@ import Greeting from '@/components/landing/Greeting'
 import Timeline from '@/components/Timeline'
 import GoldDust from '@/components/GoldDust'
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://meinita.amanloka.com'
 
 // ✅ WHATSAPP PREVIEW METADATA (PERSONALIZED PER TAMU)
 export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
