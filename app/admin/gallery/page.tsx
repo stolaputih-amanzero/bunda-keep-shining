@@ -297,7 +297,7 @@ export default function GalleryPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#0A192F] border border-[#D4AF37]/30 p-6 rounded-2xl w-full max-w-md shadow-2xl relative z-10 text-white animate-fade-in"
+              className="bg-[#0A192F] border border-[#D4AF37]/30 p-6 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl relative z-10 text-white animate-fade-in"
             >
               <div className="flex items-center justify-between mb-6 pb-2 border-b border-white/10">
                 <h3 className="text-base font-serif font-bold text-gradient-gold">Ubah Detail Foto</h3>
