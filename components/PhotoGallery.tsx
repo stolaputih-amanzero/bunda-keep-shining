@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { Camera, ChevronLeft, ChevronRight, X, ZoomIn, Play, Pause } from 'lucide-react'
 
 type Photo = {
@@ -80,7 +80,7 @@ export default function PhotoGallery() {
   const activePhoto = photos[currentIndex]
 
   // Slide Animation Variants
-  const slideVariants = {
+  const slideVariants: Variants = {
     enter: (dir: number) => ({
       x: dir > 0 ? '100%' : '-100%',
       opacity: 0,
