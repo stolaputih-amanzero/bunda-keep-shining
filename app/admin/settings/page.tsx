@@ -358,7 +358,7 @@ export default function SettingsPage() {
                   {uploadingHologram ? (
                     <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
                   ) : (
-                    <span>Unggah Video</span>
+                    <span>Unggah</span>
                   )}
                   <input 
                     type="file" 
