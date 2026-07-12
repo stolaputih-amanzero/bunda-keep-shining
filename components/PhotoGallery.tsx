@@ -135,7 +135,7 @@ export default function PhotoGallery() {
             <img
               src={activePhoto.image_url}
               alt={activePhoto.caption || 'Foto Galeri'}
-              className="w-full h-full object-cover select-none"
+              className="w-full h-full object-contain select-none"
               loading="eager"
             />
             {/* Glassmorphic Caption Overlay */}

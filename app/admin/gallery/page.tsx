@@ -32,6 +32,8 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [replacing, setReplacing] = useState(false)
 
   // Modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
@@ -124,6 +126,36 @@ export default function GalleryPage() {
     }
   }
 
+  // Replace Photo Image Action
+  const handleImageReplace = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setReplacing(true)
+    try {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `photo_${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`
+      const filePath = `photos/${fileName}`
+
+      const { error: uploadErr } = await supabase.storage
+        .from('gallery')
+        .upload(filePath, file)
+
+      if (uploadErr) throw uploadErr
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('gallery')
+        .getPublicUrl(filePath)
+
+      setImageUrl(publicUrl)
+      success('Gambar berhasil diunggah')
+    } catch (err: any) {
+      error('Gagal mengunggah gambar: ' + err.message)
+    } finally {
+      setReplacing(false)
+    }
+  }
+
   // Edit Photo Action
   const handleEditPhoto = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -137,7 +169,7 @@ export default function GalleryPage() {
     try {
       const { error: updateErr } = await supabase.rpc('admin_update_gallery_photo', {
         p_id: editingPhoto.id,
-        p_image_url: editingPhoto.image_url,
+        p_image_url: imageUrl !== null ? imageUrl : editingPhoto.image_url,
         p_caption: caption || null,
         p_order_index: order_index
       })
@@ -255,6 +287,7 @@ export default function GalleryPage() {
                   <button
                     onClick={() => {
                       setEditingPhoto(p)
+                      setImageUrl(null)
                       setIsEditModalOpen(true)
                     }}
                     className="p-1.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 transition-colors cursor-pointer"
@@ -290,6 +323,7 @@ export default function GalleryPage() {
               onClick={() => {
                 setIsEditModalOpen(false)
                 setEditingPhoto(null)
+                setImageUrl(null)
               }}
               className="absolute inset-0 bg-black"
             />
@@ -305,6 +339,7 @@ export default function GalleryPage() {
                   onClick={() => {
                     setIsEditModalOpen(false)
                     setEditingPhoto(null)
+                    setImageUrl(null)
                   }}
                   className="text-white/40 hover:text-white cursor-pointer"
                 >
@@ -313,8 +348,41 @@ export default function GalleryPage() {
               </div>
 
               <form onSubmit={handleEditPhoto} className="space-y-4 text-xs">
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/10 mb-4">
-                  <img src={editingPhoto.image_url} alt="Pratinjau" className="w-full h-full object-cover" />
+                <div className="aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/10 mb-4 relative group">
+                  <img src={imageUrl !== null ? imageUrl : editingPhoto.image_url} alt="Pratinjau" className="w-full h-full object-cover" />
+                  {replacing && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                      <Loader2 className="w-6 h-6 animate-spin text-[#D4AF37]" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Ganti Gambar Input */}
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-white/55 block mb-1.5 font-bold">Ganti Gambar (Optional)</label>
+                  <div className="flex gap-2 mb-4">
+                    <input 
+                      type="text" 
+                      value={imageUrl !== null ? imageUrl : editingPhoto.image_url} 
+                      readOnly 
+                      placeholder="Pilih berkas baru untuk mengganti..."
+                      className="flex-1 bg-[#020C1B] border border-white/10 p-3 rounded-lg text-white/60 focus:outline-none truncate"
+                    />
+                    <label className="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-3 rounded-lg font-bold flex items-center justify-center cursor-pointer shrink-0 transition-colors">
+                      {replacing ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
+                      ) : (
+                        <Upload className="w-4 h-4 text-[#D4AF37]" />
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        disabled={replacing}
+                        onChange={handleImageReplace}
+                        className="hidden" 
+                      />
+                    </label>
+                  </div>
                 </div>
 
                 <div>
@@ -333,6 +401,7 @@ export default function GalleryPage() {
                     onClick={() => {
                       setIsEditModalOpen(false)
                       setEditingPhoto(null)
+                      setImageUrl(null)
                     }}
                     className="px-4 py-2 border border-white/10 hover:bg-white/5 rounded-lg font-bold cursor-pointer"
                   >
