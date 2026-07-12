@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Play, X, Sparkles, Video, Volume2 } from 'lucide-react'
 
 interface HologramGreetingProps {
@@ -14,6 +14,13 @@ export default function HologramGreeting({ token }: HologramGreetingProps) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  // Autoplay states
+  const [isMuted, setIsMuted] = useState(false)
+  const [hasOpened, setHasOpened] = useState(false)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { amount: 0.6 }) // Triggers when 60% of section is in view
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -44,15 +51,29 @@ export default function HologramGreeting({ token }: HologramGreetingProps) {
     fetchVideo()
   }, [supabase])
 
+  // Autoplay trigger when scrolled into view
+  useEffect(() => {
+    if (isInView && !hasOpened && videoUrl) {
+      setIsMuted(true)
+      setIsPlaying(true)
+      setHasOpened(true)
+    }
+  }, [isInView, hasOpened, videoUrl])
+
+  const handleManualPlay = () => {
+    setIsMuted(false)
+    setIsPlaying(true)
+  }
+
   if (loading || !videoUrl) return null
 
   const isYouTube = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')
-  const formattedVideoUrl = isYouTube && !videoUrl.includes('?autoplay=1')
-    ? `${videoUrl}?autoplay=1&rel=0&modestbranding=1&mute=0`
+  const formattedVideoUrl = isYouTube
+    ? `${videoUrl}?autoplay=1&rel=0&modestbranding=1&mute=${isMuted ? '1' : '0'}`
     : videoUrl
 
   return (
-    <div className="w-full px-6 py-8 flex flex-col items-center select-none">
+    <div ref={containerRef} className="w-full px-6 py-8 flex flex-col items-center select-none">
       
       {/* Projection Platform Wrapper */}
       <div className="relative flex flex-col items-center justify-center w-full max-w-xs mt-4">
@@ -71,7 +92,7 @@ export default function HologramGreeting({ token }: HologramGreetingProps) {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          onClick={() => setIsPlaying(true)}
+          onClick={handleManualPlay}
           className="relative z-10 w-full max-w-[220px] aspect-[3/4] premium-glass bg-gradient-to-b from-[#D4AF37]/10 to-transparent border border-[#D4AF37]/45 rounded-2xl p-4 flex flex-col justify-between items-center text-center shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer group hover:border-[#D4AF37]/80 hover:shadow-[0_0_40px_rgba(212,175,55,0.35)] transition-all"
         >
           {/* Scanline overlay effect */}
@@ -159,8 +180,20 @@ export default function HologramGreeting({ token }: HologramGreetingProps) {
                   autoPlay
                   controls
                   playsInline
+                  muted={isMuted}
                   className="w-full h-full border-0 relative z-10 bg-black object-cover"
                 />
+              )}
+
+              {/* Tap to Unmute Overlay for Autoplay mode */}
+              {isMuted && (
+                <button
+                  onClick={() => setIsMuted(false)}
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-[#D4AF37] text-[#0A192F] hover:bg-white transition-all rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shadow-lg animate-bounce cursor-pointer"
+                >
+                  <Volume2 className="w-3.5 h-3.5 animate-pulse" />
+                  <span>Ketuk untuk Bersuara</span>
+                </button>
               )}
             </motion.div>
           </div>
