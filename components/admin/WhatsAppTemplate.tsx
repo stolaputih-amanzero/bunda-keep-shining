@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { useToast } from './Toast'
 import { motion } from 'framer-motion'
-import { 
-  MessageSquare, 
-  Copy, 
-  Send, 
-  Sparkles, 
-  Search, 
-  Download, 
-  FileText, 
+import {
+  MessageSquare,
+  Copy,
+  Send,
+  Sparkles,
+  Search,
+  Download,
+  FileText,
   Check,
   HelpCircle,
   Loader2
@@ -26,28 +26,28 @@ type Guest = {
 }
 
 const DEFAULT_TEMPLATE = `Shalom,
-Kepada yang terhormat,
-{title}{full_name}
+Kepada Yth. Bapak/Ibu/Saudara(i):
+*{title}{full_name}*
 
-Dengan penuh ucapan syukur atas kasih setia Tuhan, kami memiliki kehormatan untuk mengundang Bapak/Ibu/Saudara(i) dalam Ibadah Syukur Emeritus (Purna Bakti Organik) atas pelayanan dari:
+Dengan penuh ucapan syukur atas kasih setia Tuhan, kami mengundang Bapak/Ibu/Saudara(i) untuk menghadiri Ibadah Syukur Emeritus (Purna Bakti) atas pelayanan dari:
 
-✨ Pdt. Ny. Meinita M.E. Wungo-Damping ✨
-(38 Tahun Pelayanan yang Penuh Kesetiaan)
+*Pdt. Ny. Meinita M.E. Wungo-Damping*
+(38 Tahun Masa Pelayanan yang Penuh Kesetiaan)
 
-Ibadah syukur dengan tema "Keep Shining in His Grace" ini akan diselenggarakan pada:
+Ibadah Syukur dengan tema *"Keep Shining in His Grace"* ini akan diselenggarakan pada:
 
-📅 Hari/Tanggal: {event_date}
-⏰ Waktu: {event_time}
-📍 Tempat: {event_location}
+*• Hari/Tanggal :* {event_date}
+*• Waktu        :* {event_time}
+*• Tempat       :* {event_location}
 
-Merupakan suatu kehormatan dan sukacita yang besar bagi kami apabila Bapak/Ibu/Saudara(i) berkenan hadir bersama-sama dengan kami dalam ibadah syukur ini.
+Kehadiran serta doa restu Bapak/Ibu/Saudara(i) sangat berarti bagi kami dalam merayakan berkat pelayanan ini.
 
-Untuk detail acara, lokasi presisi, dan konfirmasi kehadiran (RSVP), mohon berkenan membuka tautan undangan digital eksklusif Anda berikut ini:
+Untuk detail acara, peta lokasi, dan konfirmasi RSVP, mohon berkenan mengakses tautan undangan digital Anda di bawah ini:
 
 {invitation_link}
 
-Teriring salam dan doa kami,
-Panitia & Keluarga
+Teriring salam dan doa hangat kami,
+*Panitia & Keluarga*
 
 Tuhan Yesus Memberkati.`
 
@@ -107,7 +107,7 @@ export default function WhatsAppTemplate() {
     if (!guest) return ''
     const titleVal = guest.title ? `${guest.title} ` : ''
     const link = `${window.location.origin}/invite/${guest.unique_token}`
-    
+
     return template
       .replace(/{title}/g, titleVal)
       .replace(/{full_name}/g, guest.full_name)
@@ -187,13 +187,13 @@ export default function WhatsAppTemplate() {
   }
 
   // Filter guest list by search term
-  const filteredGuests = guests.filter(g => 
+  const filteredGuests = guests.filter(g =>
     g.full_name.toLowerCase().includes(search.toLowerCase())
   )
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-sans">
-      
+
       {/* Column 1: Template Composer */}
       <div className="premium-glass bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg flex flex-col space-y-6">
         <div className="border-b border-white/5 pb-4">
@@ -226,29 +226,29 @@ export default function WhatsAppTemplate() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
           <div className="space-y-1">
             <label className="text-[9px] uppercase tracking-wider text-white/50 font-bold">Tanggal Acara</label>
-            <input 
-              type="text" 
-              value={eventDate} 
-              onChange={(e) => setEventDate(e.target.value)} 
-              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]" 
+            <input
+              type="text"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </div>
           <div className="space-y-1">
             <label className="text-[9px] uppercase tracking-wider text-white/50 font-bold">Waktu Acara</label>
-            <input 
-              type="text" 
-              value={eventTime} 
-              onChange={(e) => setEventTime(e.target.value)} 
-              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]" 
+            <input
+              type="text"
+              value={eventTime}
+              onChange={(e) => setEventTime(e.target.value)}
+              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </div>
           <div className="space-y-1">
             <label className="text-[9px] uppercase tracking-wider text-white/50 font-bold">Lokasi Acara</label>
-            <input 
-              type="text" 
-              value={eventLocation} 
-              onChange={(e) => setEventLocation(e.target.value)} 
-              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]" 
+            <input
+              type="text"
+              value={eventLocation}
+              onChange={(e) => setEventLocation(e.target.value)}
+              className="w-full bg-[#020C1B] border border-white/10 p-2.5 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </div>
         </div>
@@ -328,8 +328,8 @@ export default function WhatsAppTemplate() {
                   key={g.id}
                   onClick={() => setSelectedGuest(g)}
                   className={`w-full text-left px-4 py-2 text-xs flex justify-between items-center transition-colors cursor-pointer border-b border-white/2
-                    ${selectedGuest?.id === g.id 
-                      ? 'bg-[#D4AF37]/15 text-[#D4AF37] font-semibold' 
+                    ${selectedGuest?.id === g.id
+                      ? 'bg-[#D4AF37]/15 text-[#D4AF37] font-semibold'
                       : 'text-white/70 hover:bg-white/2'
                     }
                   `}
@@ -369,7 +369,7 @@ export default function WhatsAppTemplate() {
               </>
             )}
           </button>
-          
+
           <button
             onClick={handleSend}
             disabled={!selectedGuest || !selectedGuest.phone}
