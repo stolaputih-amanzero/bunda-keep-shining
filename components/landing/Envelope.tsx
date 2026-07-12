@@ -86,12 +86,12 @@ export default function Envelope({ guest, children }: EnvelopeProps) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex flex-col items-center mt-12"
+                        className="flex flex-col items-center mt-16 pb-8"
                     >
-                        <p className="text-gradient-gold font-serif italic text-4xl leading-none drop-shadow-lg mb-3">
+                        <h2 className="text-gradient-gold font-serif italic text-4xl leading-normal drop-shadow-lg mb-1">
                             Keep Shining
-                        </p>
-                        <p className="text-[#D4AF37]/80 text-[8px] tracking-[0.5em] uppercase font-bold text-center">
+                        </h2>
+                        <p className="text-[#D4AF37]/80 text-[8px] tracking-[0.5em] uppercase font-bold text-center mt-1">
                             in His Grace
                         </p>
                     </motion.div>
