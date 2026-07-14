@@ -14,7 +14,8 @@ import {
   FileText,
   Check,
   HelpCircle,
-  Loader2
+  Loader2,
+  Save
 } from 'lucide-react'
 
 type Guest = {
@@ -60,6 +61,8 @@ export default function WhatsAppTemplate() {
   const [eventDate, setEventDate] = useState('Minggu, 16 Agustus 2026')
   const [eventTime, setEventTime] = useState('09:00 WIB')
   const [eventLocation, setEventLocation] = useState('GPIB "Bukit Moria", Tebet')
+  const [eventAddress, setEventAddress] = useState('')
+  const [mapLink, setMapLink] = useState('')
 
   // Guest list states
   const [guests, setGuests] = useState<Guest[]>([])
@@ -70,6 +73,38 @@ export default function WhatsAppTemplate() {
   // Actions states
   const [copied, setCopied] = useState(false)
   const [generatingTxt, setGeneratingTxt] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  const handleSaveTemplate = async () => {
+    setSaving(true)
+    try {
+      // 1. Save WhatsApp config template
+      const { error: err1 } = await supabase.rpc('admin_update_event_config', {
+        p_key: 'whatsapp_config',
+        p_value: { template: template }
+      })
+      if (err1) throw err1
+
+      // 2. Save Event Info
+      const { error: err2 } = await supabase.rpc('admin_update_event_config', {
+        p_key: 'event_info',
+        p_value: { 
+          date: eventDate, 
+          time: eventTime, 
+          location: eventLocation,
+          address: eventAddress,
+          map_link: mapLink
+        }
+      })
+      if (err2) throw err2
+
+      success('Template dan pengaturan berhasil disimpan & disinkronkan')
+    } catch (e: any) {
+      error('Gagal menyimpan: ' + e.message)
+    } finally {
+      setSaving(false)
+    }
+  }
 
   // Fetch guests and configurations for preview
   useEffect(() => {
@@ -103,6 +138,11 @@ export default function WhatsAppTemplate() {
               setEventDate(cfg.value?.date || 'Minggu, 16 Agustus 2026')
               setEventTime(cfg.value?.time || '09:00 WIB')
               setEventLocation(cfg.value?.location || 'GPIB "Bukit Moria", Tebet')
+              setEventAddress(cfg.value?.address || '')
+              setMapLink(cfg.value?.map_link || '')
+            }
+            if (cfg.key === 'whatsapp_config') {
+              setTemplate(cfg.value?.template || DEFAULT_TEMPLATE)
             }
           })
         }
@@ -275,6 +315,20 @@ export default function WhatsAppTemplate() {
             className="w-full h-80 bg-[#020C1B]/80 border border-white/10 p-4 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/25 rounded-xl resize-none leading-relaxed"
           />
         </div>
+
+        {/* Save Template & Settings Button */}
+        <button
+          onClick={handleSaveTemplate}
+          disabled={saving}
+          className="w-full bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] text-[#0A192F] py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center space-x-2 hover:shadow-lg hover:shadow-[#D4AF37]/15 transition-all cursor-pointer disabled:opacity-50"
+        >
+          {saving ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          <span>Simpan Template &amp; Pengaturan</span>
+        </button>
 
         {/* Export All Messages */}
         <button

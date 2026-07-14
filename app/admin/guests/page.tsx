@@ -60,6 +60,31 @@ export default function GuestsPage() {
   const [eventDate, setEventDate] = useState('Minggu, 16 Agustus 2026')
   const [eventTime, setEventTime] = useState('09:00 WIB')
   const [eventLocation, setEventLocation] = useState('GPIB "Bukit Moria", Tebet')
+  const [whatsappTemplate, setWhatsappTemplate] = useState(`Shalom,
+Kepada Yth. Bapak/Ibu/Saudara(i):
+*{title}{full_name}*
+
+Dengan penuh ucapan syukur atas kasih setia Tuhan, kami mengundang Bapak/Ibu/Saudara(i) untuk menghadiri Ibadah Syukur Emeritus (Purna Bakti) atas pelayanan dari:
+
+*Pdt. Ny. Meinita M.E. Wungo-Damping*
+(38 Tahun Masa Pelayanan yang Penuh Kesetiaan)
+
+Ibadah Syukur dengan tema *"Keep Shining in His Grace"* ini akan diselenggarakan pada:
+
+*❇️ Hari/Tanggal :* {event_date}
+*❇️ Waktu        :* {event_time}
+*❇️ Tempat       :* {event_location}
+
+Kehadiran serta doa restu Bapak/Ibu/Saudara(i) sangat berarti bagi kami dalam merayakan berkat pelayanan ini.
+
+Untuk detail acara, peta lokasi, dan konfirmasi RSVP, mohon berkenan mengakses tautan undangan digital Anda di bawah ini:
+
+{invitation_link}
+
+Teriring salam dan doa hangat kami,
+*Panitia & Keluarga*
+
+Tuhan Yesus Memberkati.`)
 
   // Load configs on mount
   useEffect(() => {
@@ -72,6 +97,9 @@ export default function GuestsPage() {
               setEventDate(cfg.value?.date || 'Minggu, 16 Agustus 2026')
               setEventTime(cfg.value?.time || '09:00 WIB')
               setEventLocation(cfg.value?.location || 'GPIB "Bukit Moria", Tebet')
+            }
+            if (cfg.key === 'whatsapp_config') {
+              setWhatsappTemplate(cfg.value?.template || '')
             }
           })
         }
@@ -450,33 +478,16 @@ export default function GuestsPage() {
     const baseUrl = window.location.origin
     const inviteLink = `${baseUrl}/invite/${g.unique_token}`
     const titleVal = g.title ? `${g.title} ` : ''
-    const text = `Shalom,
-Kepada Yth. Bapak/Ibu/Saudara(i):
-*${titleVal}${g.full_name}*
 
-Dengan penuh ucapan syukur atas kasih setia Tuhan, kami mengundang Bapak/Ibu/Saudara(i) untuk menghadiri Ibadah Syukur Emeritus (Purna Bakti) atas pelayanan dari:
+    const compiledText = whatsappTemplate
+      .replace(/{title}/g, titleVal)
+      .replace(/{full_name}/g, g.full_name)
+      .replace(/{event_date}/g, eventDate)
+      .replace(/{event_time}/g, eventTime)
+      .replace(/{event_location}/g, eventLocation)
+      .replace(/{invitation_link}/g, inviteLink)
 
-*Pdt. Ny. Meinita M.E. Wungo-Damping*
-(38 Tahun Masa Pelayanan yang Penuh Kesetiaan)
-
-Ibadah Syukur dengan tema *"Keep Shining in His Grace"* ini akan diselenggarakan pada:
-
-*❇️ Hari/Tanggal :* ${eventDate}
-*❇️ Waktu        :* ${eventTime}
-*❇️ Tempat       :* ${eventLocation}
-
-Kehadiran serta doa restu Bapak/Ibu/Saudara(i) sangat berarti bagi kami dalam merayakan berkat pelayanan ini.
-
-Untuk detail acara, peta lokasi, dan konfirmasi RSVP, mohon berkenan mengakses tautan undangan digital Anda di bawah ini:
-
-${inviteLink}
-
-Teriring salam dan doa hangat kami,
-*Panitia & Keluarga*
-
-Tuhan Yesus Memberkati.`
-
-    return `https://wa.me/${g.phone?.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`
+    return `https://wa.me/${g.phone?.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(compiledText)}`
   }
 
   // Pagination totals
