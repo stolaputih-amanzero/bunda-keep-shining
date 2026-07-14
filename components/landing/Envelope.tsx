@@ -16,6 +16,13 @@ interface EnvelopeProps {
 export default function Envelope({ guest, children }: EnvelopeProps) {
     const [isOpen, setIsOpen] = useState(false)
 
+    const fullName = guest.title ? `${guest.title} ${guest.full_name}` : guest.full_name
+    const nameFontSizeClass = fullName.length > 40 
+        ? 'text-base md:text-lg' 
+        : fullName.length > 25 
+            ? 'text-lg md:text-xl' 
+            : 'text-xl md:text-2xl'
+
     return (
         <AnimatePresence mode="wait">
             {!isOpen ? (
@@ -43,7 +50,7 @@ export default function Envelope({ guest, children }: EnvelopeProps) {
                         }}
                         className="relative mb-8 flex flex-col items-center"
                     >
-                        <div className="w-64 h-40 bg-gradient-to-br from-[#0A192F] to-[#05101E] rounded-lg shadow-2xl flex items-center justify-center relative overflow-hidden border border-[#D4AF37]/50 metallic-shadow">
+                        <div className="w-[280px] h-44 bg-gradient-to-br from-[#0A192F] to-[#05101E] rounded-lg shadow-2xl flex items-center justify-center relative overflow-hidden border border-[#D4AF37]/50 metallic-shadow">
                             {/* Envelope Side Flaps Illusion */}
                             <div className="absolute top-0 w-full h-full border-t border-[#D4AF37]/20 opacity-50"></div>
                             
@@ -52,13 +59,13 @@ export default function Envelope({ guest, children }: EnvelopeProps) {
                             
                             {/* Guest Name - The Focal Point */}
                             <motion.div 
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-20 px-6 mt-2"
+                                className="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-20 px-6"
                                 animate={{ opacity: [0.8, 1, 0.8], scale: [0.98, 1, 0.98] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                <p className="text-[8px] text-[#D4AF37]/70 uppercase tracking-[0.4em] font-bold mb-2">Kepada Yth.</p>
-                                <p className="text-gradient-gold font-serif italic text-2xl leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                                    {guest.title ? `${guest.title} ` : ''}{guest.full_name}
+                                <p className="text-[8px] text-[#D4AF37]/70 uppercase tracking-[0.4em] font-bold mb-1.5">Kepada Yth.</p>
+                                <p className={`text-gradient-gold font-serif italic ${nameFontSizeClass} leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
+                                    {fullName}
                                 </p>
                             </motion.div>
                         </div>
