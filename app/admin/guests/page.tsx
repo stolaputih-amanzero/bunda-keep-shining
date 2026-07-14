@@ -71,9 +71,9 @@ Dengan penuh ucapan syukur atas kasih setia Tuhan, kami mengundang Bapak/Ibu/Sau
 
 Ibadah Syukur dengan tema *"Keep Shining in His Grace"* ini akan diselenggarakan pada:
 
-*❇️ Hari/Tanggal :* {event_date}
-*❇️ Waktu        :* {event_time}
-*❇️ Tempat       :* {event_location}
+*✦ Hari/Tanggal :* {event_date}
+*✦ Waktu        :* {event_time}
+*✦ Tempat       :* {event_location}
 
 Kehadiran serta doa restu Bapak/Ibu/Saudara(i) sangat berarti bagi kami dalam merayakan berkat pelayanan ini.
 

@@ -55,7 +55,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ toast, success, error, warning, info }}>
       {children}
-      <div className="fixed bottom-5 right-5 z-[9999] flex flex-col space-y-3 max-w-sm w-full pointer-events-none">
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0 z-[9999] flex flex-col space-y-3 max-w-sm w-[calc(100%-2.5rem)] sm:w-full pointer-events-none">
         <AnimatePresence>
           {toasts.map((t) => {
             let Icon = Info
