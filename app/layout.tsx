@@ -9,6 +9,26 @@ export const metadata: Metadata = {
   title: 'Keep Shining in His Grace | Emeritus Ceremony',
   description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0', // Prevents zooming on mobile inputs
+  openGraph: {
+    title: 'Keep Shining in His Grace | Emeritus Ceremony',
+    description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Keep Shining in His Grace | Emeritus Ceremony',
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Keep Shining in His Grace | Emeritus Ceremony',
+    description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function RootLayout({
