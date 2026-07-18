@@ -5,7 +5,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
 
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(defaultUrl),
   title: 'Keep Shining in His Grace | Emeritus Ceremony',
   description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0', // Prevents zooming on mobile inputs
