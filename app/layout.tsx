@@ -5,9 +5,13 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const defaultUrl = process.env.NEXT_PUBLIC_APP_URL && process.env.NEXT_PUBLIC_APP_URL !== 'http://localhost:3000'
+  ? process.env.NEXT_PUBLIC_APP_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000'
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
@@ -17,15 +21,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Keep Shining in His Grace | Emeritus Ceremony',
     description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
-    images: [
-      {
-        url: `${defaultUrl}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: 'Keep Shining in His Grace | Emeritus Ceremony',
-        type: 'image/png',
-      },
-    ],
     locale: 'id_ID',
     type: 'website',
   },
@@ -33,7 +28,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Keep Shining in His Grace | Emeritus Ceremony',
     description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
-    images: [`${defaultUrl}/og-image.png`],
   },
 }
 
