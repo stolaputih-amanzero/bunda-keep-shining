@@ -19,10 +19,11 @@ export const metadata: Metadata = {
     description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
     images: [
       {
-        url: '/og-image.png',
+        url: `${defaultUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: 'Keep Shining in His Grace | Emeritus Ceremony',
+        type: 'image/png',
       },
     ],
     locale: 'id_ID',
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Keep Shining in His Grace | Emeritus Ceremony',
     description: 'Emeritus Ceremony Invitation for Pdt. Ny. Meinita M.E. Wungo-Damping',
-    images: ['/og-image.png'],
+    images: [`${defaultUrl}/og-image.png`],
   },
 }
 
